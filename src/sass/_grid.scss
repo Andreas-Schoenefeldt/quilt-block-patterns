@@ -1,0 +1,11 @@
+.grid-row {
+    display: flex;
+}
+
+.cell {
+    border: 1px dashed $gray-500;
+
+    &__inner {
+        padding-bottom: 100%;
+    }
+}
