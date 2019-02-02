@@ -6,6 +6,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            patterns: [{name: 'Grün', color: 'green', id: 1}, {name: 'Blau', color: 'blue', id: 2}],
             config: {
                 countWidth: 5,
                 countHeight: 5
@@ -28,6 +29,7 @@ export default class App extends React.Component {
                     <Config
                         configValueChange={this.configValueChange.bind(this)}
                         config={this.state.config}
+                        patterns={this.state.patterns}
                     />
                 </div>
                 <div className="col">

@@ -15,6 +15,6 @@ export default class Grid extends React.Component {
         }
 
 
-        return <div>{rows}</div>
+        return <div className={'grid'}>{rows}</div>
     }
 }

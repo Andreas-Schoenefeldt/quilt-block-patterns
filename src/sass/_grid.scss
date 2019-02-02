@@ -1,11 +1,91 @@
+.grid {
+    border-top: 1px dashed $grid-border-color;
+    border-left: 1px dashed $grid-border-color;
+}
+
 .grid-row {
     display: flex;
 }
 
 .cell {
-    border: 1px dashed $gray-500;
+    border-right: 1px dashed $grid-border-color;
+    border-bottom: 1px dashed $grid-border-color;
 
     &__inner {
         padding-bottom: 100%;
     }
+}
+
+.subcell {
+    width: 50%;
+    padding-bottom: 50%;
+    position: relative;
+    float: left;
+
+    &--configurable {
+        .triangle__inset {
+            border: 1px solid $gray-200;
+        }
+    }
+}
+
+.triangle {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+
+    &.selected {
+        > .triangle__inset {
+            background: $gray-600;
+        }
+    }
+
+    > .triangle__inset {
+        content: '';
+        padding-bottom: 100%;
+        width: 200%;
+        height: 100%;
+        display: block;
+        position: relative;
+        left: -140%;
+        top: 0;
+        transform: rotate(45deg);
+    }
+
+    &--1 {
+
+        > .triangle__inset {
+        }
+    }
+
+    &--2 {
+        transform: rotate(90deg);
+        left: 25%;
+        top: -25%;
+
+        > .triangle__inset {
+        }
+    }
+
+    &--3 {
+        left: 50%;
+
+        > .triangle__inset {
+            left: 40%;
+        }
+    }
+
+    &--4 {
+        transform: rotate(90deg);
+        left: 25%;
+        top: 25%;
+
+        > .triangle__inset {
+            left: 40%;
+        }
+    }
+
 }
