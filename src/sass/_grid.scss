@@ -10,6 +10,7 @@
 .cell {
     border-right: 1px dashed $grid-border-color;
     border-bottom: 1px dashed $grid-border-color;
+    overflow: hidden;
 
     &__inner {
         padding-bottom: 100%;
@@ -23,6 +24,23 @@
     float: left;
 
     &--configurable {
+
+        border-right: 1px solid $white;
+        border-bottom: 1px solid $white;
+
+        &:nth-child(1) {
+            border-right-color: $gray-200;
+            border-bottom-color: $gray-200;
+        }
+
+        &:nth-child(2) {
+            border-bottom-color: $gray-200;
+        }
+
+        &:nth-child(3) {
+            border-right-color: $gray-200;
+        }
+
         .triangle__inset {
             border: 1px solid $gray-200;
         }
@@ -71,7 +89,7 @@
     }
 
     &--3 {
-        left: 50%;
+        left: 51%;
 
         > .triangle__inset {
             left: 40%;
@@ -81,7 +99,7 @@
     &--4 {
         transform: rotate(90deg);
         left: 25%;
-        top: 25%;
+        top: 26%;
 
         > .triangle__inset {
             left: 40%;

@@ -24103,6 +24103,11 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "handleClick",
+    value: function handleClick() {
+      console.log(this.state.selected);
+    }
+  }, {
     key: "getSelectedClass",
     value: function getSelectedClass(triangleId) {
       if (this.state.selected && [this.state.selected, this.state.selected + 1 < 5 ? this.state.selected + 1 : 1].indexOf(triangleId) > -1) {
@@ -24118,7 +24123,8 @@ function (_React$Component) {
         ref: "subcell",
         className: 'subcell' + (this.props.configurable ? ' subcell--configurable' : ''),
         onMouseMove: this.props.configurable ? this.mouseMove.bind(this) : null,
-        onMouseLeave: this.reset.bind(this)
+        onMouseLeave: this.reset.bind(this),
+        onClick: this.props.configurable ? this.handleClick.bind(this) : null
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'triangle triangle--1' + this.getSelectedClass(1)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {

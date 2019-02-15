@@ -38,6 +38,10 @@ export default class SubCell extends React.Component {
         this.setState({selected: selected});
     }
 
+    handleClick () {
+        console.log(this.state.selected);
+    }
+
     getSelectedClass (triangleId) {
         if (this.state.selected && [this.state.selected, this.state.selected + 1 < 5 ? this.state.selected + 1 : 1].indexOf(triangleId) > -1) {
             return ' selected';
@@ -47,7 +51,12 @@ export default class SubCell extends React.Component {
     }
 
     render () {
-        return <div ref="subcell" className={'subcell' + (this.props.configurable ? ' subcell--configurable' : '')} onMouseMove={this.props.configurable ? this.mouseMove.bind(this) : null} onMouseLeave={this.reset.bind(this)}>
+        return <div ref="subcell"
+                    className={'subcell' + (this.props.configurable ? ' subcell--configurable' : '')}
+                    onMouseMove={this.props.configurable ? this.mouseMove.bind(this) : null}
+                    onMouseLeave={this.reset.bind(this)}
+                    onClick={this.props.configurable ? this.handleClick.bind(this) : null}
+        >
             <div className={'triangle triangle--1' + this.getSelectedClass(1)}><span className={'triangle__inset'}/></div>
             <div className={'triangle triangle--2' + this.getSelectedClass(2)}><span className={'triangle__inset'}/></div>
             <div className={'triangle triangle--3' + this.getSelectedClass(3)}><span className={'triangle__inset'}/></div>
