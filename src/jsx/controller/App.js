@@ -9,6 +9,7 @@ export default function App() {
                 <Config/>
             </div>
             <div className="col">
+                <Grid/>
             </div>
         </div>
     );

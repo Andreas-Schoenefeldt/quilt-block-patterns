@@ -3,26 +3,37 @@ import Cell from '../controller/Cell';
 import { connect } from "react-redux";
 
 import { getGridConfigState, getPatterns, getPattern } from '../redux/selectors';
+import { updateGridConfig } from '../redux/actions';
 
 class Config extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { input: "" };
+        this.state = this.props.config;
+
+        this.configValueChange = this.configValueChange.bind(this);
+    }
+
+    configValueChange (e) {
+        const config = {};
+        config[e.target.name] = parseInt(e.target.value ? e.target.value : 0, 10);
+
+        this.props.dispatch(updateGridConfig(config));
+        this.setState(config);
     }
 
     render () {
         return <div>
             <div className="form-group">
-                <label htmlFor="input-width">Anzahl Breite:</label>
-                <input type="text" className="form-control" id="input-width" name="countWidth"
-                       value={this.props.config.width} onChange={this.props.configValueChange}/>
+                <label htmlFor="input-width">Raster Breite:</label>
+                <input type="text" className="form-control" id="input-width" name="width"
+                       value={this.state.width} onChange={this.configValueChange}/>
             </div>
 
             <div className="form-group">
-                <label htmlFor="input-height">Anzahl Höhe:</label>
-                <input type="text" className="form-control" id="input-height" name="countWidth"
-                       value={this.props.config.height} onChange={this.props.configValueChange}/>
+                <label htmlFor="input-height">Raster Höhe:</label>
+                <input type="text" className="form-control" id="input-height" name="height"
+                       value={this.state.height} onChange={this.configValueChange}/>
             </div>
 
             <p>Farben/Muster:</p>
@@ -39,13 +50,10 @@ class Config extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-
-    console.log(state);
-
     return {
         config: getGridConfigState(state),
         patterns: getPatterns(state).map( pId => getPattern(state, pId) )
     };
-}
+};
 
 export default connect(mapStateToProps)(Config);

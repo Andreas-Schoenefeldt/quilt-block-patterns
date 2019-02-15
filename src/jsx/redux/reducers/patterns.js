@@ -1,4 +1,4 @@
-import { PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR } from "../actions";
+import { PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR } from "../actionTypes";
 
 const initialState = {
     allIds: ['default'],

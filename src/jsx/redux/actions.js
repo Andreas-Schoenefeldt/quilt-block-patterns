@@ -1,5 +1,7 @@
-export const SUBCELL_CLICK = "SUBCELL_CLICK";
+import * as actionTypes from './actionTypes';
+import { dispatch } from 'redux';
 
-export const PATTERN_ADD = "PATTERN_ADD";
-export const PATTERN_DELETE = "PATTERN_DELETE";
-export const PATTERN_CHANGE_COLOR = "PATTERN_CHANGE_COLOR";
+export const updateGridConfig = (conf) => ({
+    type: actionTypes.GRID_CONFIG_UPDATE,
+    payload: conf
+})

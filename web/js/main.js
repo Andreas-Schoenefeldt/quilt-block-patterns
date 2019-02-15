@@ -26810,7 +26810,7 @@ function App() {
     className: "col-md-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_view_Config__WEBPACK_IMPORTED_MODULE_1__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col"
-  }));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_view_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
 }
 /*
 
@@ -26955,23 +26955,48 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./src/jsx/redux/actions.js":
-/*!**********************************!*\
-  !*** ./src/jsx/redux/actions.js ***!
-  \**********************************/
-/*! exports provided: SUBCELL_CLICK, PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR */
+/***/ "./src/jsx/redux/actionTypes.js":
+/*!**************************************!*\
+  !*** ./src/jsx/redux/actionTypes.js ***!
+  \**************************************/
+/*! exports provided: SUBCELL_CLICK, GRID_CONFIG_UPDATE, PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SUBCELL_CLICK", function() { return SUBCELL_CLICK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GRID_CONFIG_UPDATE", function() { return GRID_CONFIG_UPDATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_ADD", function() { return PATTERN_ADD; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_DELETE", function() { return PATTERN_DELETE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_CHANGE_COLOR", function() { return PATTERN_CHANGE_COLOR; });
 var SUBCELL_CLICK = "SUBCELL_CLICK";
+var GRID_CONFIG_UPDATE = "GRID_CONFIG_UPDATE";
 var PATTERN_ADD = "PATTERN_ADD";
 var PATTERN_DELETE = "PATTERN_DELETE";
 var PATTERN_CHANGE_COLOR = "PATTERN_CHANGE_COLOR";
+
+/***/ }),
+
+/***/ "./src/jsx/redux/actions.js":
+/*!**********************************!*\
+  !*** ./src/jsx/redux/actions.js ***!
+  \**********************************/
+/*! exports provided: updateGridConfig */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateGridConfig", function() { return updateGridConfig; });
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./src/jsx/redux/actionTypes.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+
+
+var updateGridConfig = function updateGridConfig(conf) {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["GRID_CONFIG_UPDATE"],
+    payload: conf
+  };
+};
 
 /***/ }),
 
@@ -27006,6 +27031,8 @@ var initialState = {};
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./src/jsx/redux/actionTypes.js");
+
 var initialState = {
   config: {
     width: 5,
@@ -27018,6 +27045,11 @@ var initialState = {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["GRID_CONFIG_UPDATE"]:
+      return Object.assign({}, state, {
+        config: Object.assign({}, state.config, action.payload)
+      });
+
     default:
       return state;
   }
@@ -27034,7 +27066,7 @@ var initialState = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions */ "./src/jsx/redux/actions.js");
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./src/jsx/redux/actionTypes.js");
 
 var initialState = {
   allIds: ['default'],
@@ -27228,6 +27260,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controller_Cell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../controller/Cell */ "./src/jsx/controller/Cell.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27238,13 +27271,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -27262,37 +27296,44 @@ function (_React$Component) {
     _classCallCheck(this, Config);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Config).call(this, props));
-    _this.state = {
-      input: ""
-    };
+    _this.state = _this.props.config;
+    _this.configValueChange = _this.configValueChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Config, [{
+    key: "configValueChange",
+    value: function configValueChange(e) {
+      var config = {};
+      config[e.target.name] = parseInt(e.target.value ? e.target.value : 0, 10);
+      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateGridConfig"])(config));
+      this.setState(config);
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "input-width"
-      }, "Anzahl Breite:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Raster Breite:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         id: "input-width",
-        name: "countWidth",
-        value: this.props.config.width,
-        onChange: this.props.configValueChange
+        name: "width",
+        value: this.state.width,
+        onChange: this.configValueChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "input-height"
-      }, "Anzahl H\xF6he:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Raster H\xF6he:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         id: "input-height",
-        name: "countWidth",
-        value: this.props.config.height,
-        onChange: this.props.configValueChange
+        name: "height",
+        value: this.state.height,
+        onChange: this.configValueChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Farben/Muster:"), this.props.patterns.map(function (pattern) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: pattern.id,
@@ -27314,7 +27355,6 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
-  console.log(state);
   return {
     config: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getGridConfigState"])(state),
     patterns: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getPatterns"])(state).map(function (pId) {
@@ -27336,10 +27376,11 @@ var mapStateToProps = function mapStateToProps(state) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Grid; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Cell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cell */ "./src/jsx/view/Cell.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var _Cell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Cell */ "./src/jsx/view/Cell.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27361,6 +27402,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
 var Grid =
 /*#__PURE__*/
 function (_React$Component) {
@@ -27377,13 +27420,13 @@ function (_React$Component) {
     value: function render() {
       var rows = [];
 
-      for (var y = 0; y < this.props.cellsY; y++) {
+      for (var y = 0; y < this.props.height; y++) {
         var cells = [];
 
-        for (var x = 0; x < this.props.cellsX; x++) {
-          cells.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cell__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        for (var x = 0; x < this.props.width; x++) {
+          cells.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cell__WEBPACK_IMPORTED_MODULE_3__["default"], {
             key: 'cell-' + x + '_' + y,
-            width: 100 / this.props.cellsX + '%'
+            width: 100 / this.props.width + '%'
           }));
         }
 
@@ -27402,7 +27445,7 @@ function (_React$Component) {
   return Grid;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getGridConfigState"])(Grid));
 
 /***/ }),
 

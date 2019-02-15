@@ -1,14 +1,17 @@
 import React from 'react';
+import { connect } from "react-redux";
+
+import { getGridConfigState } from '../redux/selectors';
 import Cell from './Cell';
 
-export default class Grid extends React.Component {
+class Grid extends React.Component {
     render () {
 
         let rows = [];
-        for (let y = 0; y < this.props.cellsY; y++) {
+        for (let y = 0; y < this.props.height; y++) {
             let cells = [];
-            for (let x = 0; x < this.props.cellsX; x++) {
-                cells.push(<Cell key={'cell-' + x + '_' + y} width={(100/this.props.cellsX) + '%'}/>);
+            for (let x = 0; x < this.props.width; x++) {
+                cells.push(<Cell key={'cell-' + x + '_' + y} width={(100/this.props.width) + '%'}/>);
             }
 
             rows.push(<div className={'grid-row'} key={'row-' + y}>{cells}</div>);
@@ -18,3 +21,5 @@ export default class Grid extends React.Component {
         return <div className={'grid'}>{rows}</div>
     }
 }
+
+export default connect(getGridConfigState)(Grid);
