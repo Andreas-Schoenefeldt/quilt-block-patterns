@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewCell from '../view/Cell.jsx';
+import ViewCell from '../view/Cell.js';
 
 export default class Cell extends React.Component {
     constructor(props) {

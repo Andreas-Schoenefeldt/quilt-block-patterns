@@ -1,5 +1,5 @@
 import React from 'react';
-import SubCell from './SubCell.jsx';
+import SubCell from './SubCell';
 
 export default class Config extends React.Component {
     render () {

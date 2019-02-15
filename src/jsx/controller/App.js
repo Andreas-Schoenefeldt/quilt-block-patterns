@@ -1,6 +1,20 @@
 import React from 'react';
-import Config from '../view/Config.jsx';
-import Grid from '../view/Grid.jsx';
+import Config from '../view/Config';
+import Grid from '../view/Grid';
+
+export default function App() {
+    return (
+        <div className="row">
+            <div className="col-md-3">
+                <Config/>
+            </div>
+            <div className="col">
+            </div>
+        </div>
+    );
+}
+
+/*
 
 export default class App extends React.Component {
     constructor(props) {
@@ -42,3 +56,5 @@ export default class App extends React.Component {
         );
     }
 }
+
+*/

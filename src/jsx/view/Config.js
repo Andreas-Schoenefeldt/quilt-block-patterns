@@ -1,19 +1,28 @@
 import React from 'react';
-import Cell from '../controller/Cell.jsx';
+import Cell from '../controller/Cell';
+import { connect } from "react-redux";
 
-export default class Config extends React.Component {
+import { getGridConfigState, getPatterns, getPattern } from '../redux/selectors';
+
+class Config extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { input: "" };
+    }
+
     render () {
         return <div>
             <div className="form-group">
                 <label htmlFor="input-width">Anzahl Breite:</label>
                 <input type="text" className="form-control" id="input-width" name="countWidth"
-                       value={this.props.config.countWidth} onChange={this.props.configValueChange}/>
+                       value={this.props.config.width} onChange={this.props.configValueChange}/>
             </div>
 
             <div className="form-group">
                 <label htmlFor="input-height">Anzahl Höhe:</label>
                 <input type="text" className="form-control" id="input-height" name="countWidth"
-                       value={this.props.config.countHeight} onChange={this.props.configValueChange}/>
+                       value={this.props.config.height} onChange={this.props.configValueChange}/>
             </div>
 
             <p>Farben/Muster:</p>
@@ -28,3 +37,15 @@ export default class Config extends React.Component {
         </div>
     }
 }
+
+const mapStateToProps = (state) => {
+
+    console.log(state);
+
+    return {
+        config: getGridConfigState(state),
+        patterns: getPatterns(state).map( pId => getPattern(state, pId) )
+    };
+}
+
+export default connect(mapStateToProps)(Config);
