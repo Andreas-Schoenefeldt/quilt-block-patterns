@@ -32,10 +32,21 @@ export default function(state = initialState, action) {
 
             return newState;
         case COLOR_PICKER_SHOW:
-            console.log(action);
             return Object.assign({}, state, { pickerActiveFor: action.payload.patternId });
-        default:
-            return state;
+        case PATTERN_CHANGE_COLOR:
+            if (action.payload.patternId !== 'NEW') {
+                const newState = Object.assign({}, state);
+
+                for (let id in newState.byId) {
+                    if (newState.byId[id].id === action.payload.patternId) {
+                        newState.byId[id].color = action.payload.color;
+                    }
+                }
+                return newState;
+            } else {
+                return state;
+            }
     }
 
+    return state;
 }

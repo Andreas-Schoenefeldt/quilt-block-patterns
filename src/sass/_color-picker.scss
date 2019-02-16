@@ -1,4 +1,4 @@
-$color-picker-width: 250px;
+$color-picker-width: 230px;
 $color-picker-arrow-size: 15px;
 $color-picker-arrow-left: ($grid-gutter-width + $small-block-dimension - (2 * $color-picker-arrow-size)) / 2;
 $color-picker-background: $white;
@@ -39,8 +39,10 @@ $color-picker-background: $white;
     }
 }
 
-.color-picker__headline {
-    font-size: 1rem;
+.circle-picker  {
+    margin-right: -12px!important;
 }
 
-.circle-picker  { margin-right: -28px!important; }
+.hue-picker  {
+    margin-bottom: 1rem;
+}

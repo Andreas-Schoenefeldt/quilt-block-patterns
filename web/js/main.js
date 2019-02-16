@@ -51902,13 +51902,14 @@ var COLOR_PICKER_SHOW = "COLOR_PICKER_SHOW";
 /*!**********************************!*\
   !*** ./src/jsx/redux/actions.js ***!
   \**********************************/
-/*! exports provided: updateGridConfig, addPattern, showColorPicker */
+/*! exports provided: updateGridConfig, addPattern, changePatternColor, showColorPicker */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateGridConfig", function() { return updateGridConfig; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addPattern", function() { return addPattern; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changePatternColor", function() { return changePatternColor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showColorPicker", function() { return showColorPicker; });
 /* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./src/jsx/redux/actionTypes.js");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
@@ -51927,6 +51928,15 @@ var addPattern = function addPattern(color) {
     type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_ADD"],
     payload: {
       color: color
+    }
+  };
+};
+var changePatternColor = function changePatternColor(color, patternId) {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_CHANGE_COLOR"],
+    payload: {
+      color: color,
+      patternId: patternId
     }
   };
 }; // color picker actions
@@ -52041,14 +52051,28 @@ var initialState = {
       return newState;
 
     case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["COLOR_PICKER_SHOW"]:
-      console.log(action);
       return Object.assign({}, state, {
         pickerActiveFor: action.payload.patternId
       });
 
-    default:
-      return state;
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_CHANGE_COLOR"]:
+      if (action.payload.patternId !== 'NEW') {
+        var _newState = Object.assign({}, state);
+
+        for (var _id in _newState.byId) {
+          if (_newState.byId[_id].id === action.payload.patternId) {
+            _newState.byId[_id].color = action.payload.color;
+          }
+        }
+
+        return _newState;
+      } else {
+        return state;
+      }
+
   }
+
+  return state;
 });
 
 /***/ }),
@@ -52574,30 +52598,80 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../redux/actions */ "./src/jsx/redux/actions.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
 
 
-var newPatternColor = '#40862D';
 
-var AddPatternButton = function AddPatternButton(_ref) {
-  var dispatch = _ref.dispatch;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "pattern-row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pattern__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    color: newPatternColor
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    onClick: function onClick() {
-      return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["addPattern"])(newPatternColor));
-    },
-    className: "btn btn-info",
-    title: 'Eine weitere Farbe oder ein weiteres Muster hinzufügen'
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
-    icon: "plus"
-  }), " Farbe/Muster"));
-};
+var newPatternColor = '#4caf50';
 
+var AddPatternButton =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(AddPatternButton, _React$Component);
+
+  function AddPatternButton(props) {
+    var _this;
+
+    _classCallCheck(this, AddPatternButton);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AddPatternButton).call(this, props));
+    _this.color = newPatternColor;
+    _this.handleAddColor = _this.handleAddColor.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.setColor = _this.setColor.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(AddPatternButton, [{
+    key: "handleAddColor",
+    value: function handleAddColor() {
+      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["addPattern"])(this.color));
+    }
+  }, {
+    key: "setColor",
+    value: function setColor(color) {
+      this.color = color;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "pattern-row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pattern__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        color: this.color,
+        onUpdate: this.setColor
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleAddColor,
+        className: "btn btn-info",
+        title: 'Eine weitere Farbe oder ein weiteres Muster hinzufügen'
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+        icon: "plus"
+      }), " Farbe/Muster"));
+    }
+  }]);
+
+  return AddPatternButton;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+;
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])()(AddPatternButton));
 
 /***/ }),
@@ -52646,15 +52720,21 @@ var circleColors = ["#ffffff", '#000000', "#f44336", "#e91e63", "#9c27b0", "#673
 var ColorPicker = function ColorPicker(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: 'color-picker'
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-    className: 'color-picker__headline'
-  }, "Farbe \xE4ndern:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_color__WEBPACK_IMPORTED_MODULE_1__["CirclePicker"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_color__WEBPACK_IMPORTED_MODULE_1__["CirclePicker"], {
     colors: circleColors,
-    width: '100%'
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_color__WEBPACK_IMPORTED_MODULE_1__["HuePicker"], {
+    width: 'auto',
+    onChange: props.handleChange
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_color__WEBPACK_IMPORTED_MODULE_1__["HuePicker"], {
     color: props.color,
-    width: '100%'
-  }));
+    width: '100%',
+    onChange: props.handleChange
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-primary btn-sm",
+    onClick: props.handleClose
+  }, "Ok"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-light btn-sm",
+    onClick: props.handleReset
+  }, "Cancel"));
 };
 
 var Pattern =
@@ -52672,18 +52752,47 @@ function (_React$Component) {
       color: props.color,
       id: 'NEW'
     };
+    _this.resetColor = null;
     _this.state = {
-      color: _this.pattern.color // showPicker: this.pattern.id === props.colorPickerActiveFor
-
+      color: _this.pattern.color
     };
     _this.showPicker = _this.showPicker.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.hidePicker = _this.hidePicker.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleReset = _this.handleReset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Pattern, [{
     key: "showPicker",
     value: function showPicker() {
+      this.resetColor = this.state.color;
       this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["showColorPicker"])(this.pattern.id));
+    }
+  }, {
+    key: "hidePicker",
+    value: function hidePicker() {
+      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["showColorPicker"])(null));
+    }
+  }, {
+    key: "handleReset",
+    value: function handleReset() {
+      this.handleChange({
+        hex: this.resetColor
+      });
+      this.hidePicker();
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(color) {
+      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["changePatternColor"])(color.hex, this.pattern.id));
+      this.setState({
+        color: color.hex
+      });
+
+      if (this.props.onUpdate) {
+        this.props.onUpdate(color.hex);
+      }
     }
   }, {
     key: "render",
@@ -52698,7 +52807,10 @@ function (_React$Component) {
         title: this.pattern.name ? this.pattern.name : null,
         onClick: this.showPicker
       }), this.props.showPickerFor === this.pattern.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ColorPicker, {
-        color: this.state.color
+        color: this.state.color,
+        handleChange: this.handleChange,
+        handleClose: this.hidePicker,
+        handleReset: this.handleReset
       }) : null);
     }
   }]);

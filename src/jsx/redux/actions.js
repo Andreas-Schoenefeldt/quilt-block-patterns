@@ -15,6 +15,11 @@ export const addPattern = (color) => ({
     payload: { color }
 });
 
+export const changePatternColor = (color, patternId) => ({
+    type: actionTypes.PATTERN_CHANGE_COLOR,
+    payload: {color, patternId}
+});
+
 // color picker actions
 export const showColorPicker = (patternId) => ({
     type: actionTypes.COLOR_PICKER_SHOW,
