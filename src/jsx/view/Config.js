@@ -1,6 +1,7 @@
 import React from 'react';
 import Cell from '../controller/Cell';
 import AddPatternButton from './pattern/AddPatternButton';
+import Pattern from './pattern/Pattern';
 import { connect } from "react-redux";
 
 import { getGridConfigState, getPatterns, getPattern } from '../redux/selectors';
@@ -17,9 +18,16 @@ class Config extends React.Component {
 
     configValueChange (e) {
         const config = {};
-        config[e.target.name] = parseInt(e.target.value ? e.target.value : 0, 10);
+        const prop = e.target.name;
 
-        this.props.dispatch(updateGridConfig(config));
+        if (! e.target.value) {
+            config[prop] = e.target.value;
+            return;
+        } else {
+            config[prop] = parseInt(e.target.value ? e.target.value : 0, 10);
+            this.props.dispatch(updateGridConfig(config));
+        }
+
         this.setState(config);
     }
 
@@ -38,9 +46,11 @@ class Config extends React.Component {
             </div>
 
             <p>Farben/Muster:</p>
-            {this.props.patterns.map(function (pattern) {
-                return <div key={pattern.id} className={'pattern'} style={{background: pattern.color}}>{pattern.name}</div>
-            })}
+            <div className='pattern-row'>
+                {this.props.patterns.map(function (pattern) {
+                    return <Pattern key={pattern.id} color={pattern.color} name={pattern.name} />
+                })}
+            </div>
             <AddPatternButton/>
 
             <p>Basis Block erstellen:</p>

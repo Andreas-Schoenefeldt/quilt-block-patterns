@@ -36867,9 +36867,12 @@ var updateGridConfig = function updateGridConfig(conf) {
   };
 }; // pattern actions
 
-var addPattern = function addPattern() {
+var addPattern = function addPattern(color) {
   return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_ADD"]
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_ADD"],
+    payload: {
+      color: color
+    }
   };
 };
 
@@ -36944,6 +36947,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./src/jsx/redux/actionTypes.js");
 
 var initialState = {
+  nextId: 1,
   allIds: ['default'],
   byId: {
     'default': {
@@ -36958,6 +36962,19 @@ var initialState = {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["PATTERN_ADD"]:
+      var newState = Object.assign({}, state);
+      var id = state.nextId;
+      var newPattern = {
+        id: id,
+        color: action.payload.color,
+        name: ''
+      };
+      newState.allIds.push(id);
+      newState.byId[id] = newPattern;
+      newState.nextId++;
+      return newState;
+
     default:
       return state;
   }
@@ -37134,9 +37151,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _controller_Cell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../controller/Cell */ "./src/jsx/controller/Cell.js");
 /* harmony import */ var _pattern_AddPatternButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pattern/AddPatternButton */ "./src/jsx/view/pattern/AddPatternButton.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
-/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
+/* harmony import */ var _pattern_Pattern__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pattern/Pattern */ "./src/jsx/view/pattern/Pattern.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37154,6 +37172,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -37182,8 +37201,16 @@ function (_React$Component) {
     key: "configValueChange",
     value: function configValueChange(e) {
       var config = {};
-      config[e.target.name] = parseInt(e.target.value ? e.target.value : 0, 10);
-      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["updateGridConfig"])(config));
+      var prop = e.target.name;
+
+      if (!e.target.value) {
+        config[prop] = e.target.value;
+        return;
+      } else {
+        config[prop] = parseInt(e.target.value ? e.target.value : 0, 10);
+        this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_6__["updateGridConfig"])(config));
+      }
+
       this.setState(config);
     }
   }, {
@@ -37211,15 +37238,15 @@ function (_React$Component) {
         name: "height",
         value: this.state.height,
         onChange: this.configValueChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Farben/Muster:"), this.props.patterns.map(function (pattern) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Farben/Muster:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "pattern-row"
+      }, this.props.patterns.map(function (pattern) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_Pattern__WEBPACK_IMPORTED_MODULE_3__["default"], {
           key: pattern.id,
-          className: 'pattern',
-          style: {
-            background: pattern.color
-          }
-        }, pattern.name);
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_AddPatternButton__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Basis Block erstellen:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          color: pattern.color,
+          name: pattern.name
+        });
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_AddPatternButton__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Basis Block erstellen:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'grid'
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controller_Cell__WEBPACK_IMPORTED_MODULE_1__["default"], {
         width: '100%',
@@ -37233,14 +37260,14 @@ function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    config: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_4__["getGridConfigState"])(state),
-    patterns: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_4__["getPatterns"])(state).map(function (pId) {
-      return Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_4__["getPattern"])(state, pId);
+    config: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getGridConfigState"])(state),
+    patterns: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPatterns"])(state).map(function (pId) {
+      return Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPattern"])(state, pId);
     })
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps)(Config));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps)(Config));
 
 /***/ }),
 
@@ -37469,27 +37496,62 @@ function (_React$Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../redux/actions */ "./src/jsx/redux/actions.js");
+/* harmony import */ var _Pattern__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pattern */ "./src/jsx/view/pattern/Pattern.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../redux/actions */ "./src/jsx/redux/actions.js");
 
 
 
 
+
+var newPatternColor = '#40862D';
 
 var AddPatternButton = function AddPatternButton(_ref) {
-  var addPattern = _ref.addPattern;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-link",
+  var dispatch = _ref.dispatch;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "pattern-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pattern__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    color: newPatternColor
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: function onClick() {
+      return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["addPattern"])(newPatternColor));
+    },
+    className: "btn btn-info",
     title: 'Eine weitere Farbe oder ein weiteres Muster hinzufügen'
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
     icon: "plus"
-  }), " Farbe/Muster");
+  }), " Farbe/Muster"));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(null, {
-  addPattern: _redux_actions__WEBPACK_IMPORTED_MODULE_3__["addPattern"]
-})(AddPatternButton));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])()(AddPatternButton));
+
+/***/ }),
+
+/***/ "./src/jsx/view/pattern/Pattern.js":
+/*!*****************************************!*\
+  !*** ./src/jsx/view/pattern/Pattern.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Pattern = function Pattern(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: 'pattern',
+    style: {
+      background: props.color
+    },
+    title: props.name ? props.name : null
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Pattern);
 
 /***/ })
 

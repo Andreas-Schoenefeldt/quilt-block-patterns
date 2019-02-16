@@ -6921,13 +6921,6 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
-.pattern {
-  padding: 1rem 2rem;
-  text-shadow: 0 0 3px #fff;
-  border-radius: 0.25rem;
-  margin-bottom: .5rem;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); }
-
 .grid {
   border-top: 1px dashed #adb5bd;
   border-left: 1px dashed #adb5bd; }
@@ -6993,3 +6986,20 @@ a.text-dark:hover, a.text-dark:focus {
     top: 26%; }
     .triangle--4 > .triangle__inset {
       left: 40%; }
+
+.pattern-row {
+  margin: 5px -2.5px; }
+  .pattern-row::after {
+    display: block;
+    clear: both;
+    content: ""; }
+
+.pattern {
+  display: block;
+  height: 37px;
+  width: 37px;
+  text-shadow: 0 0 3px #fff;
+  border-radius: 0.25rem;
+  margin: 0 2.5px 5px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  float: left; }

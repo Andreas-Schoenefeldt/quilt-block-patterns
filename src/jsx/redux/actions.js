@@ -10,6 +10,7 @@ export const updateGridConfig = (conf) => ({
 
 
 // pattern actions
-export const addPattern = () => ({
+export const addPattern = (color) => ({
     type: actionTypes.PATTERN_ADD,
+    payload: { color }
 });
