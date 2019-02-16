@@ -1,15 +1,29 @@
 import React from 'react';
+import store from '../redux/store';
+import { getPatterns, getPattern } from '../redux/selectors';
+
+const getNextColorId = (colorId) => {
+    const availableColors = getPatterns(store.getState());
+    return availableColors[
+        availableColors.indexOf(colorId) + 1 >= availableColors.length ? 0 : availableColors.indexOf(colorId) + 1
+    ];
+};
 
 export default class SubCell extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: null
-        }
+            selected: null,
+            colors: ['default', 'default', 'default', 'default'],
+            selecteds: [false, false, false, false]
+        };
+
+        this.getColorStyles = this.getColorStyles.bind(this);
+        this.getSelectedClass = this.getSelectedClass.bind(this);
     }
 
     reset () {
-        this.setState({selected : null});
+        this.setState({ selected : null });
     }
 
     mouseMove (e) {
@@ -39,7 +53,28 @@ export default class SubCell extends React.Component {
     }
 
     handleClick () {
-        console.log(this.state.selected);
+        const state = this.state;
+        const currentColorId = state.colors[this.state.selected - 1];
+        const newColor = getNextColorId(currentColorId);
+
+        // check, if there was already a selection
+        for (let i = 0; i < 4; i++) {
+            if (this.getSelectedClass(i + 1) && state.selecteds[i]) {
+                // if yes: reset
+                state.colors = ['default', 'default', 'default', 'default'];
+                state.selecteds = [false, false, false, false];
+            }
+        }
+
+        // set the new color
+        for (let i = 0; i < 4; i++) {
+            if (this.getSelectedClass(i + 1)) {
+                state.colors[i] = newColor;
+                state.selecteds[i] = true;
+            }
+        }
+
+        this.setState(state);
     }
 
     getSelectedClass (triangleId) {
@@ -50,6 +85,22 @@ export default class SubCell extends React.Component {
         return '';
     }
 
+    getColorStyles (triangleId) {
+        const styles = {};
+
+        if (this.getSelectedClass(triangleId)) {
+            styles.opacity = 0.5;
+            styles.background = getPattern(store.getState(), getNextColorId(this.state.colors[this.state.selected - 1])).color;
+        } else {
+
+            console.log(this.state.colors);
+
+            styles.background = getPattern(store.getState(), this.state.colors[triangleId - 1]).color;
+        }
+
+        return styles;
+    }
+
     render () {
         return <div ref="subcell"
                     className={'subcell' + (this.props.configurable ? ' subcell--configurable' : '')}
@@ -57,10 +108,10 @@ export default class SubCell extends React.Component {
                     onMouseLeave={this.reset.bind(this)}
                     onClick={this.props.configurable ? this.handleClick.bind(this) : null}
         >
-            <div className={'triangle triangle--1' + this.getSelectedClass(1)}><span className={'triangle__inset'}/></div>
-            <div className={'triangle triangle--2' + this.getSelectedClass(2)}><span className={'triangle__inset'}/></div>
-            <div className={'triangle triangle--3' + this.getSelectedClass(3)}><span className={'triangle__inset'}/></div>
-            <div className={'triangle triangle--4' + this.getSelectedClass(4)}><span className={'triangle__inset'}/></div>
+            <div className={'triangle triangle--1' + this.getSelectedClass(1)}><span className={'triangle__inset'} style={this.getColorStyles(1)}/></div>
+            <div className={'triangle triangle--2' + this.getSelectedClass(2)}><span className={'triangle__inset'} style={this.getColorStyles(2)}/></div>
+            <div className={'triangle triangle--3' + this.getSelectedClass(3)}><span className={'triangle__inset'} style={this.getColorStyles(3)}/></div>
+            <div className={'triangle triangle--4' + this.getSelectedClass(4)}><span className={'triangle__inset'} style={this.getColorStyles(4)}/></div>
         </div>
     }
 

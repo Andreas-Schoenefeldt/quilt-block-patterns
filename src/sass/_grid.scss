@@ -22,6 +22,7 @@
     padding-bottom: 50%;
     position: relative;
     float: left;
+    overflow: hidden;
 
     &--configurable {
 
@@ -54,12 +55,6 @@
     overflow: hidden;
     left: 0;
     top: 0;
-
-    &.selected {
-        > .triangle__inset {
-            background: $gray-600;
-        }
-    }
 
     > .triangle__inset {
         content: '';

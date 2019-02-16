@@ -52021,14 +52021,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./src/jsx/redux/actionTypes.js");
 
 var initialState = {
-  nextId: 1,
+  nextId: 2,
   pickerActiveFor: false,
-  allIds: ['default'],
+  allIds: ['default', 1],
   byId: {
     'default': {
       id: 'default',
       color: '#fff',
       name: 'Hintergrund'
+    },
+    1: {
+      id: 1,
+      color: '#000',
+      name: 'Vordergrund 1'
     }
   }
 };
@@ -52463,6 +52468,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SubCell; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _redux_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../redux/store */ "./src/jsx/redux/store.js");
+/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52473,15 +52480,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+
+
+
+
+var getNextColorId = function getNextColorId(colorId) {
+  var availableColors = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPatterns"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState());
+  return availableColors[availableColors.indexOf(colorId) + 1 >= availableColors.length ? 0 : availableColors.indexOf(colorId) + 1];
+};
 
 var SubCell =
 /*#__PURE__*/
@@ -52495,8 +52509,12 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SubCell).call(this, props));
     _this.state = {
-      selected: null
+      selected: null,
+      colors: ['default', 'default', 'default', 'default'],
+      selecteds: [false, false, false, false]
     };
+    _this.getColorStyles = _this.getColorStyles.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.getSelectedClass = _this.getSelectedClass.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -52536,7 +52554,28 @@ function (_React$Component) {
   }, {
     key: "handleClick",
     value: function handleClick() {
-      console.log(this.state.selected);
+      var state = this.state;
+      var availableColors = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPatterns"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState());
+      var currentColorId = state.colors[this.state.selected - 1];
+      var newColor = getNextColorId(currentColorId); // check, if there was already a selection
+
+      for (var i = 0; i < 4; i++) {
+        if (this.getSelectedClass(i + 1) && state.selecteds[i]) {
+          // if yes: reset
+          state.colors = ['default', 'default', 'default', 'default'];
+          state.selecteds = [false, false, false, false];
+        }
+      } // set the new color
+
+
+      for (var _i = 0; _i < 4; _i++) {
+        if (this.getSelectedClass(_i + 1)) {
+          state.colors[_i] = newColor;
+          state.selecteds[_i] = true;
+        }
+      }
+
+      this.setState(state);
     }
   }, {
     key: "getSelectedClass",
@@ -52546,6 +52585,21 @@ function (_React$Component) {
       }
 
       return '';
+    }
+  }, {
+    key: "getColorStyles",
+    value: function getColorStyles(triangleId) {
+      var styles = {};
+
+      if (this.getSelectedClass(triangleId)) {
+        styles.opacity = 0.5;
+        styles.background = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), getNextColorId(this.state.colors[this.state.selected - 1])).color;
+      } else {
+        console.log(this.state.colors);
+        styles.background = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), this.state.colors[triangleId - 1]).color;
+      }
+
+      return styles;
     }
   }, {
     key: "render",
@@ -52559,19 +52613,23 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'triangle triangle--1' + this.getSelectedClass(1)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: 'triangle__inset'
+        className: 'triangle__inset',
+        style: this.getColorStyles(1)
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'triangle triangle--2' + this.getSelectedClass(2)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: 'triangle__inset'
+        className: 'triangle__inset',
+        style: this.getColorStyles(2)
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'triangle triangle--3' + this.getSelectedClass(3)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: 'triangle__inset'
+        className: 'triangle__inset',
+        style: this.getColorStyles(3)
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'triangle triangle--4' + this.getSelectedClass(4)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: 'triangle__inset'
+        className: 'triangle__inset',
+        style: this.getColorStyles(4)
       })));
     }
   }]);

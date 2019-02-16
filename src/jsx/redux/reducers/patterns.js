@@ -1,14 +1,19 @@
 import { PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR, COLOR_PICKER_SHOW } from "../actionTypes";
 
 const initialState = {
-    nextId: 1,
+    nextId: 2,
     pickerActiveFor: false,
-    allIds: ['default'],
+    allIds: ['default', 1],
     byId: {
         'default': {
             id: 'default',
             color: '#fff',
             name: 'Hintergrund'
+        },
+        1: {
+            id: 1,
+            color: '#000',
+            name: 'Vordergrund 1'
         }
     }
 };
