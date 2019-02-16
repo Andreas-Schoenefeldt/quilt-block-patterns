@@ -48,7 +48,7 @@ class Config extends React.Component {
             <p>Farben/Muster:</p>
             <div className='pattern-row'>
                 {this.props.patterns.map(function (pattern) {
-                    return <Pattern key={pattern.id} color={pattern.color} name={pattern.name} />
+                    return <Pattern key={pattern.id} pattern={pattern} />
                 })}
             </div>
             <AddPatternButton/>

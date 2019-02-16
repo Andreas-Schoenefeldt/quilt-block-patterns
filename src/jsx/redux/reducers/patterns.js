@@ -1,7 +1,8 @@
-import { PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR } from "../actionTypes";
+import { PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR, COLOR_PICKER_SHOW } from "../actionTypes";
 
 const initialState = {
     nextId: 1,
+    pickerActiveFor: false,
     allIds: ['default'],
     byId: {
         'default': {
@@ -30,6 +31,9 @@ export default function(state = initialState, action) {
             newState.nextId++;
 
             return newState;
+        case COLOR_PICKER_SHOW:
+            console.log(action);
+            return Object.assign({}, state, { pickerActiveFor: action.payload.patternId });
         default:
             return state;
     }

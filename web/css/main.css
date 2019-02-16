@@ -6994,12 +6994,53 @@ a.text-dark:hover, a.text-dark:focus {
     clear: both;
     content: ""; }
 
+.pattern-wrp {
+  display: block;
+  float: left;
+  width: 37px;
+  position: relative;
+  margin: 0 2.5px; }
+
 .pattern {
   display: block;
   height: 37px;
-  width: 37px;
   text-shadow: 0 0 3px #fff;
   border-radius: 0.25rem;
-  margin: 0 2.5px 5px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-  float: left; }
+  margin: 0 0 5px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); }
+
+.color-picker {
+  padding: 15px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  border-radius: 0.2rem;
+  background: #fff;
+  position: absolute;
+  width: 250px;
+  top: 54.5px;
+  left: -15px;
+  z-index: 1000;
+  border: 1px solid rgba(0, 0, 0, 0.2); }
+  .color-picker:before {
+    content: '';
+    border: 15px solid transparent;
+    width: 15px;
+    height: 15px;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 18.5px;
+    top: -30px; }
+  .color-picker:after {
+    content: '';
+    border: 17px solid transparent;
+    border-bottom-color: #fff;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    left: 16.5px;
+    top: -29px; }
+
+.color-picker__headline {
+  font-size: 1rem; }
+
+.circle-picker {
+  margin-right: -28px !important; }

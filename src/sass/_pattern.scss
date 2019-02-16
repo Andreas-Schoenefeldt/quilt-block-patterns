@@ -4,13 +4,19 @@
     @include clearfix;
 }
 
+.pattern-wrp {
+    display: block;
+    float: left;
+    width: $small-block-dimension;
+    position: relative;
+    margin: 0 ($small-block-distance / 2);
+}
+
 .pattern {
     display: block;
     height: $small-block-dimension;
-    width: $small-block-dimension;
     text-shadow: 0 0 3px $white;
     border-radius: $border-radius;
-    margin: 0 ($small-block-distance / 2) $small-block-distance;
+    margin: 0 0 $small-block-distance;
     box-shadow: 0 0 4px rgba(0, 0, 0, .3);
-    float: left;
 }
