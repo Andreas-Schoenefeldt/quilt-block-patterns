@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from '../controller/Cell';
+import AddPatternButton from './pattern/AddPatternButton';
 import { connect } from "react-redux";
 
 import { getGridConfigState, getPatterns, getPattern } from '../redux/selectors';
@@ -40,6 +41,7 @@ class Config extends React.Component {
             {this.props.patterns.map(function (pattern) {
                 return <div key={pattern.id} className={'pattern'} style={{background: pattern.color}}>{pattern.name}</div>
             })}
+            <AddPatternButton/>
 
             <p>Basis Block erstellen:</p>
             <div className={'grid'}>
