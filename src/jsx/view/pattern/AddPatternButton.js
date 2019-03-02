@@ -37,6 +37,6 @@ class AddPatternButton extends React.Component {
             </div>
         )
     }
-};
+}
 
 export default connect()(AddPatternButton);

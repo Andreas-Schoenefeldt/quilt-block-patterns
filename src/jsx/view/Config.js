@@ -1,6 +1,7 @@
 import React from 'react';
 import Cell from '../controller/Cell';
 import AddPatternButton from './pattern/AddPatternButton';
+import AddBlockButton from './config/AddBlockButton';
 import Pattern from './pattern/Pattern';
 import { connect } from "react-redux";
 
@@ -54,9 +55,12 @@ class Config extends React.Component {
             <AddPatternButton/>
 
             <p>Basis Block erstellen:</p>
-            <div className={'grid'}>
-                <Cell width={'100%'} configurable={true}/>
+            <div className={'config-block'}>
+                <div className={'grid'}>
+                    <Cell width={'100%'} config={this.props.configBlock} configurable={true}/>
+                </div>
             </div>
+            <AddBlockButton/>
         </div>
     }
 }
@@ -64,7 +68,8 @@ class Config extends React.Component {
 const mapStateToProps = (state) => {
     return {
         config: getGridConfigState(state),
-        patterns: getPatterns(state).map( pId => getPattern(state, pId) )
+        patterns: getPatterns(state).map( pId => getPattern(state, pId) ),
+        configBlock: state.configBlock
     };
 };
 

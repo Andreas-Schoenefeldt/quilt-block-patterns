@@ -25,3 +25,10 @@ export const showColorPicker = (patternId) => ({
     type: actionTypes.COLOR_PICKER_SHOW,
     payload: {patternId}
 });
+
+
+// subcell actions
+export const updateSubcell = (subCellId, colors, selecteds) => ({
+    type: actionTypes.SUBCELL_UPDATE,
+    payload: {subCellId, config: {colors, selecteds}}
+});

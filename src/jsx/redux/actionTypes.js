@@ -1,4 +1,5 @@
 export const SUBCELL_CLICK = "SUBCELL_CLICK";
+export const SUBCELL_UPDATE = "SUBCELL_UPDATE";
 
 export const GRID_CONFIG_UPDATE = "GRID_CONFIG_UPDATE";
 

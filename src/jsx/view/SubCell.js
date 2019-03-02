@@ -1,6 +1,9 @@
 import React from 'react';
 import store from '../redux/store';
+import { connect } from "react-redux";
+
 import { getPatterns, getPattern } from '../redux/selectors';
+import { updateSubcell } from '../redux/actions';
 
 const getNextColorId = (colorId) => {
     const availableColors = getPatterns(store.getState());
@@ -9,13 +12,14 @@ const getNextColorId = (colorId) => {
     ];
 };
 
-export default class SubCell extends React.Component {
+class SubCell extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: null,
-            colors: ['default', 'default', 'default', 'default'],
-            selecteds: [false, false, false, false]
+            colors: props.config.colors ? props.config.colors : ['default', 'default', 'default', 'default'],
+            selecteds: props.config.selecteds ? props.config.selecteds : [false, false, false, false],
+            pickerActive: false
         };
 
         this.getColorStyles = this.getColorStyles.bind(this);
@@ -56,18 +60,17 @@ export default class SubCell extends React.Component {
         const state = this.state;
         const mainTriangleId = this.state.selected - 1;
         const nextMainTriangleId = mainTriangleId + 1 < 4 ? mainTriangleId + 1 : 0;
-        const currentColorId = state.colors[mainTriangleId];
-        const newColor = getNextColorId(currentColorId);
+        const prevMainTriangleId = mainTriangleId - 1 > -1 ? mainTriangleId - 1 : 3;
 
         // check, if there was already a selection
-        if (mainTriangleId)
-
-
-        if (state.selecteds[nextMainTriangleId]) {
+        if (state.selecteds[nextMainTriangleId] || state.selecteds[prevMainTriangleId]) {
             // reset
             state.colors = ['default', 'default', 'default', 'default'];
             state.selecteds = [false, false, false, false];
         }
+
+        const currentColorId = state.colors[mainTriangleId];
+        const newColor = getNextColorId(currentColorId);
 
         // set the new color
         for (let i = 0; i < 4; i++) {
@@ -77,7 +80,9 @@ export default class SubCell extends React.Component {
             }
         }
 
-        this.setState(state);
+        this.props.dispatch(updateSubcell(this.props.subCellId, state.colors, state.selecteds));
+
+        // this.setState(state);
     }
 
     getSelectedClass (triangleId) {
@@ -115,5 +120,6 @@ export default class SubCell extends React.Component {
             <div className={'triangle triangle--4' + this.getSelectedClass(4)}><span className={'triangle__inset'} style={this.getColorStyles(4)}/></div>
         </div>
     }
-
 }
+
+export default connect()(SubCell);

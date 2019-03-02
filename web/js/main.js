@@ -51865,9 +51865,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
  // setup font awesome
 
 _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faPlus"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faSave"]);
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
   store: _redux_store__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controller_App__WEBPACK_IMPORTED_MODULE_6__["default"], null)), document.getElementById('app'));
@@ -51878,18 +51880,20 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 /*!**************************************!*\
   !*** ./src/jsx/redux/actionTypes.js ***!
   \**************************************/
-/*! exports provided: SUBCELL_CLICK, GRID_CONFIG_UPDATE, PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR, COLOR_PICKER_SHOW */
+/*! exports provided: SUBCELL_CLICK, SUBCELL_UPDATE, GRID_CONFIG_UPDATE, PATTERN_ADD, PATTERN_DELETE, PATTERN_CHANGE_COLOR, COLOR_PICKER_SHOW */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SUBCELL_CLICK", function() { return SUBCELL_CLICK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SUBCELL_UPDATE", function() { return SUBCELL_UPDATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GRID_CONFIG_UPDATE", function() { return GRID_CONFIG_UPDATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_ADD", function() { return PATTERN_ADD; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_DELETE", function() { return PATTERN_DELETE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PATTERN_CHANGE_COLOR", function() { return PATTERN_CHANGE_COLOR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COLOR_PICKER_SHOW", function() { return COLOR_PICKER_SHOW; });
 var SUBCELL_CLICK = "SUBCELL_CLICK";
+var SUBCELL_UPDATE = "SUBCELL_UPDATE";
 var GRID_CONFIG_UPDATE = "GRID_CONFIG_UPDATE";
 var PATTERN_ADD = "PATTERN_ADD";
 var PATTERN_DELETE = "PATTERN_DELETE";
@@ -51902,7 +51906,7 @@ var COLOR_PICKER_SHOW = "COLOR_PICKER_SHOW";
 /*!**********************************!*\
   !*** ./src/jsx/redux/actions.js ***!
   \**********************************/
-/*! exports provided: updateGridConfig, addPattern, changePatternColor, showColorPicker */
+/*! exports provided: updateGridConfig, addPattern, changePatternColor, showColorPicker, updateSubcell */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51911,6 +51915,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addPattern", function() { return addPattern; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changePatternColor", function() { return changePatternColor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showColorPicker", function() { return showColorPicker; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateSubcell", function() { return updateSubcell; });
 /* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./src/jsx/redux/actionTypes.js");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
 
@@ -51948,6 +51953,19 @@ var showColorPicker = function showColorPicker(patternId) {
       patternId: patternId
     }
   };
+}; // subcell actions
+
+var updateSubcell = function updateSubcell(subCellId, colors, selecteds) {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["SUBCELL_UPDATE"],
+    payload: {
+      subCellId: subCellId,
+      config: {
+        colors: colors,
+        selecteds: selecteds
+      }
+    }
+  };
 };
 
 /***/ }),
@@ -51970,6 +51988,43 @@ var initialState = {};
     default:
       return state;
   }
+});
+
+/***/ }),
+
+/***/ "./src/jsx/redux/reducers/configBlock.js":
+/*!***********************************************!*\
+  !*** ./src/jsx/redux/reducers/configBlock.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./src/jsx/redux/actionTypes.js");
+
+var defaultSubcell = {
+  colors: ['default', 'default', 'default', 'default'],
+  selecteds: [false, false, false, false]
+};
+var initialState = {
+  nextId: 2,
+  id: 1,
+  subcells: [Object.assign({}, defaultSubcell), Object.assign({}, defaultSubcell), Object.assign({}, defaultSubcell), Object.assign({}, defaultSubcell)]
+};
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["SUBCELL_UPDATE"]:
+      var newState = Object.assign({}, state);
+      newState.subcells[action.payload.subCellId] = action.payload.config;
+      return newState;
+      break;
+  }
+
+  return state;
 });
 
 /***/ }),
@@ -52095,12 +52150,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _patterns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./patterns */ "./src/jsx/redux/reducers/patterns.js");
 /* harmony import */ var _grid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./grid */ "./src/jsx/redux/reducers/grid.js");
 /* harmony import */ var _blocks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blocks */ "./src/jsx/redux/reducers/blocks.js");
+/* harmony import */ var _configBlock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./configBlock */ "./src/jsx/redux/reducers/configBlock.js");
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   grid: _grid__WEBPACK_IMPORTED_MODULE_2__["default"],
+  configBlock: _configBlock__WEBPACK_IMPORTED_MODULE_4__["default"],
   blocks: _blocks__WEBPACK_IMPORTED_MODULE_3__["default"],
   patterns: _patterns__WEBPACK_IMPORTED_MODULE_1__["default"]
 }));
@@ -52108,6 +52166,13 @@ __webpack_require__.r(__webpack_exports__);
 
  {
     grid: { config: {width: 5, height: 5}, cells: {x_y: {blockId: x , orientation: 0 - 3 } } },
+    configBlock: {
+        id:
+        subcells: [ {
+            selecteds: [],
+            colors: []
+        } ]
+    }
     blocks: {
         id: {
 
@@ -52229,6 +52294,8 @@ function (_React$Component) {
       }, this.props.subCells ? this.props.subCells.map(function (subCell, i) {
         return subCell ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
           key: i,
+          subCellId: i,
+          config: this.props.config ? this.props.config.subcells[i] : {},
           configurable: this.props.configurable
         }) : null;
       }.bind(this)) : null));
@@ -52255,10 +52322,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _controller_Cell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../controller/Cell */ "./src/jsx/controller/Cell.js");
 /* harmony import */ var _pattern_AddPatternButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pattern/AddPatternButton */ "./src/jsx/view/pattern/AddPatternButton.js");
-/* harmony import */ var _pattern_Pattern__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pattern/Pattern */ "./src/jsx/view/pattern/Pattern.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
-/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
+/* harmony import */ var _config_AddBlockButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config/AddBlockButton */ "./src/jsx/view/config/AddBlockButton.js");
+/* harmony import */ var _pattern_Pattern__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pattern/Pattern */ "./src/jsx/view/pattern/Pattern.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52276,6 +52344,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -52312,7 +52381,7 @@ function (_React$Component) {
         return;
       } else {
         config[prop] = parseInt(e.target.value ? e.target.value : 0, 10);
-        this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_6__["updateGridConfig"])(config));
+        this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_7__["updateGridConfig"])(config));
       }
 
       this.setState(config);
@@ -52345,16 +52414,19 @@ function (_React$Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Farben/Muster:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pattern-row"
       }, this.props.patterns.map(function (pattern) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_Pattern__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_Pattern__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: pattern.id,
           pattern: pattern
         });
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pattern_AddPatternButton__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Basis Block erstellen:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: 'config-block'
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: 'grid'
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controller_Cell__WEBPACK_IMPORTED_MODULE_1__["default"], {
         width: '100%',
+        config: this.props.configBlock,
         configurable: true
-      })));
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_config_AddBlockButton__WEBPACK_IMPORTED_MODULE_3__["default"], null));
     }
   }]);
 
@@ -52363,14 +52435,15 @@ function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    config: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getGridConfigState"])(state),
-    patterns: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPatterns"])(state).map(function (pId) {
-      return Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPattern"])(state, pId);
-    })
+    config: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_6__["getGridConfigState"])(state),
+    patterns: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_6__["getPatterns"])(state).map(function (pId) {
+      return Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_6__["getPattern"])(state, pId);
+    }),
+    configBlock: state.configBlock
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps)(Config));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["connect"])(mapStateToProps)(Config));
 
 /***/ }),
 
@@ -52465,11 +52538,12 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SubCell; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _redux_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../redux/store */ "./src/jsx/redux/store.js");
-/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/selectors */ "./src/jsx/redux/selectors.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/actions */ "./src/jsx/redux/actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52492,8 +52566,10 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
+
 var getNextColorId = function getNextColorId(colorId) {
-  var availableColors = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPatterns"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState());
+  var availableColors = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getPatterns"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState());
   return availableColors[availableColors.indexOf(colorId) + 1 >= availableColors.length ? 0 : availableColors.indexOf(colorId) + 1];
 };
 
@@ -52510,8 +52586,9 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SubCell).call(this, props));
     _this.state = {
       selected: null,
-      colors: ['default', 'default', 'default', 'default'],
-      selecteds: [false, false, false, false]
+      colors: props.config.colors ? props.config.colors : ['default', 'default', 'default', 'default'],
+      selecteds: props.config.selecteds ? props.config.selecteds : [false, false, false, false],
+      pickerActive: false
     };
     _this.getColorStyles = _this.getColorStyles.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.getSelectedClass = _this.getSelectedClass.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -52557,14 +52634,16 @@ function (_React$Component) {
       var state = this.state;
       var mainTriangleId = this.state.selected - 1;
       var nextMainTriangleId = mainTriangleId + 1 < 4 ? mainTriangleId + 1 : 0;
-      var currentColorId = state.colors[mainTriangleId];
-      var newColor = getNextColorId(currentColorId); // check, if there was already a selection
+      var prevMainTriangleId = mainTriangleId - 1 > -1 ? mainTriangleId - 1 : 3; // check, if there was already a selection
 
-      if (mainTriangleId) if (state.selecteds[nextMainTriangleId]) {
+      if (state.selecteds[nextMainTriangleId] || state.selecteds[prevMainTriangleId]) {
         // reset
         state.colors = ['default', 'default', 'default', 'default'];
         state.selecteds = [false, false, false, false];
-      } // set the new color
+      }
+
+      var currentColorId = state.colors[mainTriangleId];
+      var newColor = getNextColorId(currentColorId); // set the new color
 
       for (var i = 0; i < 4; i++) {
         if (this.getSelectedClass(i + 1)) {
@@ -52573,7 +52652,7 @@ function (_React$Component) {
         }
       }
 
-      this.setState(state);
+      this.props.dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateSubcell"])(this.props.subCellId, state.colors, state.selecteds)); // this.setState(state);
     }
   }, {
     key: "getSelectedClass",
@@ -52588,7 +52667,7 @@ function (_React$Component) {
     key: "getColorStyles",
     value: function getColorStyles(triangleId) {
       var styles = {};
-      var currentColor = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), this.state.colors[triangleId - 1]).color;
+      var currentColor = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), this.state.colors[triangleId - 1]).color;
 
       if (this.getSelectedClass(triangleId)) {
         styles.opacity = 0.5;
@@ -52635,7 +52714,72 @@ function (_React$Component) {
   return SubCell;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])()(SubCell));
 
+/***/ }),
+
+/***/ "./src/jsx/view/config/AddBlockButton.js":
+/*!***********************************************!*\
+  !*** ./src/jsx/view/config/AddBlockButton.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var AddBlockButton =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(AddBlockButton, _React$Component);
+
+  function AddBlockButton() {
+    _classCallCheck(this, AddBlockButton);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(AddBlockButton).apply(this, arguments));
+  }
+
+  _createClass(AddBlockButton, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn btn-info",
+        title: 'Den aktuellen Block speichern'
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+        icon: "save"
+      }), " Block");
+    }
+  }]);
+
+  return AddBlockButton;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])()(AddBlockButton));
 
 /***/ }),
 
@@ -52727,7 +52871,6 @@ function (_React$Component) {
   return AddPatternButton;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-;
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])()(AddPatternButton));
 
 /***/ }),
