@@ -54,23 +54,26 @@ export default class SubCell extends React.Component {
 
     handleClick () {
         const state = this.state;
-        const currentColorId = state.colors[this.state.selected - 1];
+        const mainTriangleId = this.state.selected - 1;
+        const nextMainTriangleId = mainTriangleId + 1 < 4 ? mainTriangleId + 1 : 0;
+        const currentColorId = state.colors[mainTriangleId];
         const newColor = getNextColorId(currentColorId);
 
         // check, if there was already a selection
-        for (let i = 0; i < 4; i++) {
-            if (this.getSelectedClass(i + 1) && state.selecteds[i]) {
-                // if yes: reset
-                state.colors = ['default', 'default', 'default', 'default'];
-                state.selecteds = [false, false, false, false];
-            }
+        if (mainTriangleId)
+
+
+        if (state.selecteds[nextMainTriangleId]) {
+            // reset
+            state.colors = ['default', 'default', 'default', 'default'];
+            state.selecteds = [false, false, false, false];
         }
 
         // set the new color
         for (let i = 0; i < 4; i++) {
             if (this.getSelectedClass(i + 1)) {
                 state.colors[i] = newColor;
-                state.selecteds[i] = true;
+                state.selecteds[mainTriangleId] = true;
             }
         }
 
@@ -87,15 +90,13 @@ export default class SubCell extends React.Component {
 
     getColorStyles (triangleId) {
         const styles = {};
+        const currentColor = getPattern(store.getState(), this.state.colors[triangleId - 1]).color;
 
         if (this.getSelectedClass(triangleId)) {
             styles.opacity = 0.5;
-            styles.background = getPattern(store.getState(), getNextColorId(this.state.colors[this.state.selected - 1])).color;
+            styles.background = '#000';
         } else {
-
-            console.log(this.state.colors);
-
-            styles.background = getPattern(store.getState(), this.state.colors[triangleId - 1]).color;
+            styles.background = currentColor;
         }
 
         return styles;

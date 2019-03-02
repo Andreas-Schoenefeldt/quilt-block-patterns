@@ -52555,23 +52555,21 @@ function (_React$Component) {
     key: "handleClick",
     value: function handleClick() {
       var state = this.state;
-      var availableColors = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPatterns"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState());
-      var currentColorId = state.colors[this.state.selected - 1];
+      var mainTriangleId = this.state.selected - 1;
+      var nextMainTriangleId = mainTriangleId + 1 < 4 ? mainTriangleId + 1 : 0;
+      var currentColorId = state.colors[mainTriangleId];
       var newColor = getNextColorId(currentColorId); // check, if there was already a selection
 
-      for (var i = 0; i < 4; i++) {
-        if (this.getSelectedClass(i + 1) && state.selecteds[i]) {
-          // if yes: reset
-          state.colors = ['default', 'default', 'default', 'default'];
-          state.selecteds = [false, false, false, false];
-        }
+      if (mainTriangleId) if (state.selecteds[nextMainTriangleId]) {
+        // reset
+        state.colors = ['default', 'default', 'default', 'default'];
+        state.selecteds = [false, false, false, false];
       } // set the new color
 
-
-      for (var _i = 0; _i < 4; _i++) {
-        if (this.getSelectedClass(_i + 1)) {
-          state.colors[_i] = newColor;
-          state.selecteds[_i] = true;
+      for (var i = 0; i < 4; i++) {
+        if (this.getSelectedClass(i + 1)) {
+          state.colors[i] = newColor;
+          state.selecteds[mainTriangleId] = true;
         }
       }
 
@@ -52590,13 +52588,13 @@ function (_React$Component) {
     key: "getColorStyles",
     value: function getColorStyles(triangleId) {
       var styles = {};
+      var currentColor = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), this.state.colors[triangleId - 1]).color;
 
       if (this.getSelectedClass(triangleId)) {
         styles.opacity = 0.5;
-        styles.background = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), getNextColorId(this.state.colors[this.state.selected - 1])).color;
+        styles.background = '#000';
       } else {
-        console.log(this.state.colors);
-        styles.background = Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_2__["getPattern"])(_redux_store__WEBPACK_IMPORTED_MODULE_1__["default"].getState(), this.state.colors[triangleId - 1]).color;
+        styles.background = currentColor;
       }
 
       return styles;
